@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Ranks & Tags - Frostbite Factions</title>
+    <!-- Nhúng Font chữ từ Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS Variables - Tông màu Frostbite Băng Giá */
+        :root {
+            --primary: #38bdf8;
+            --primary-glow: rgba(56, 189, 248, 0.4);
+            --secondary: #0ea5e9;
+            --secondary-glow: rgba(14, 165, 233, 0.4);
+            --bg-dark: #030712;
+            --bg-glass: rgba(10, 17, 32, 0.7);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+        }
+
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(14, 165, 233, 0.1) 0px, transparent 50%);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Điều Hướng giống hệt trang chủ index.html */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 8%;
+            background: rgba(3, 7, 18, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-glass);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, var(--primary), #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px var(--primary-glow);
+            text-decoration: none;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a, .dropdown-btn {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: inherit;
+        }
+
+        nav a:hover, .dropdown:hover .dropdown-btn {
+            color: var(--primary);
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background-color: #0b0f19;
+            min-width: 180px;
+            box-shadow: 0px 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid var(--border-glass);
+            border-radius: 8px;
+            z-index: 1001;
+            overflow: hidden;
+        }
+
+        .dropdown-content a {
+            color: var(--text-muted);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-transform: none;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .dropdown-content a:hover {
+            background-color: rgba(56, 189, 248, 0.1);
+            color: var(--primary);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .nav-acc {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #030712 !important;
+            padding: 0.5rem 1.2rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+        .nav-acc:hover {
+            filter: brightness(1.2);
+            color: #030712 !important;
+        }
+
+        /* Container Main chính */
+        .container {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+            flex-grow: 1;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .section-title h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #ffffff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-title p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Bảng Rank Mua Grid */
+        .rank-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+            margin-bottom: 6rem;
+        }
+
+        /* Card cho từng loại Rank */
+        .rank-card {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .rank-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px var(--rank-glow, var(--primary-glow));
+            border-color: var(--rank-color, var(--primary));
+        }
+
+        /* Set màu sắc theo tag rank của bạn */
+        .rank-vip { 
+            --rank-color: #925bf2; 
+            --rank-glow: rgba(146, 91, 242, 0.3);
+        }
+        .rank-vip-plus { 
+            --rank-color: #be82fc; 
+            --rank-glow: rgba(190, 130, 252, 0.3);
+        }
+        .rank-mvp { 
+            --rank-color: #ef871f; 
+            --rank-glow: rgba(239, 135, 31, 0.3);
+        }
+        .rank-mvp-plus { 
+            --rank-color: #f7e41b; 
+            --rank-glow: rgba(247, 228, 27, 0.3);
+        }
+
+        .rank-tag-img {
+            height: 32px;
+            width: auto;
+            object-fit: contain;
+            margin: 0 auto 1.2rem;
+            display: block;
+            filter: drop-shadow(0 0 6px var(--rank-color));
+        }
+
+        .rank-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: #ffffff;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .rank-price {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--rank-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .rank-price span {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .features-list {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 2.5rem;
+            border-top: 1px solid var(--border-glass);
+            padding-top: 1.5rem;
+        }
+
+        .features-list li {
+            font-size: 0.9rem;
+            color: var(--text-main);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .features-list li::before {
+            content: '❄';
+            color: var(--rank-color);
+            font-size: 0.8rem;
+        }
+
+        .buy-now-btn {
+            background: linear-gradient(135deg, var(--rank-color), #ffffff);
+            color: #030712;
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            display: block;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px var(--rank-glow);
+        }
+
+        .buy-now-btn:hover {
+            filter: brightness(1.2);
+            transform: scale(1.05);
+        }
+
+        /* CSS Cho Phần Danh Sách Tag Admin/Staff */
+        .staff-section {
+            border-top: 1px solid var(--border-glass);
+            padding-top: 5rem;
+        }
+
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .staff-card {
+            background: rgba(10, 17, 32, 0.4);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .staff-card:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(10, 17, 32, 0.6);
+            transform: translateY(-3px);
+        }
+
+        .staff-tag-img {
+            height: 24px;
+            width: auto;
+            object-fit: contain;
+            margin: 0 auto 0.8rem;
+            display: block;
+        }
+
+        .staff-role-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.3rem;
+        }
+
+        .staff-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Chân Trang */
+        footer {
+            background-color: #02040a;
+            padding: 3rem 1.5rem;
+            text-align: center;
+            border-top: 1px solid var(--border-glass);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: auto;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1.2rem;
+                padding: 1.5rem;
+            }
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+            .section-title h1 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Menu Điều Hướng -->
+    <header>
+        <a href="index.html" class="logo">Frostbite Factions</a>
+        <nav>
+            <a href="index.html">Trang chủ</a>
+
+            <!-- Dropdown 1: Chọn Cụm -->
+            <div class="dropdown">
+                <button class="dropdown-btn">Chọn Cụm ▼</button>
+                <div class="dropdown-content">
+                    <a href="index.html#cum-chinh">Cụm Factions Băng Giá</a>
+                </div>
+            </div>
+
+            <!-- Dropdown 2: Mua Rank -->
+            <div class="dropdown">
+                <button class="dropdown-btn" style="color: var(--primary);">Mua Rank ▼</button>
+                <div class="dropdown-content">
+                    <a href="#ranks">Danh sách Rank</a>
+                    <a href="#staff-tags">Danh sách Staff Tag</a>
+                </div>
+            </div>
+
+            <a href="https://discord.gg/jhnJuCZWe" target="_blank">Discord</a>
+
+            <!-- Dropdown 3: Tài khoản -->
+            <div class="dropdown">
+                <button class="dropdown-btn nav-acc">Tài khoản ▼</button>
+                <div class="dropdown-content">
+                    <a href="#">Đăng Nhập (dn)</a>
+                    <a href="#">Đăng Ký (dk)</a>
+                    <a href="#">Thông tin cá nhân</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        
+        <!-- SECTION 1: CÁC GÓI MUA RANK -->
+        <section id="ranks">
+            <div class="section-title">
+                <h1>DANH SÁCH RANKS</h1>
+                <p>Nâng cấp tài khoản để sở hữu những bộ Kit và hiệu ứng Chat độc quyền tại Server</p>
+            </div>
+
+            <div class="rank-grid">
+                
+                <!-- Rank VIP -->
+                <div class="rank-card rank-vip">
+                    <div>
+                        <img class="rank-tag-img" src="vip_tag.png" alt="VIP Tag">
+                        <h2 class="rank-name">VIP</h2>
+                        <div class="rank-price">50.000đ <span>/ vĩnh viễn</span></div>
+                        <ul class="features-list">
+                            <li>Prefix [VIP] màu tím nổi bật</li>
+                            <li>Sở hữu bộ Kit VIP tuần lợi hại</li>
+                            <li>Quyền lợi bay (Fly) tại sảnh chờ</li>
+                            <li>Được ưu tiên vào phòng khi hàng chờ đầy</li>
+                        </ul>
+                    </div>
+                    <a href="https://discord.gg/jhnJuCZWe" target="_blank" class="buy-now-btn">MUA QUA DISCORD</a>
+                </div>
+
+                <!-- Rank VIP+ -->
+                <div class="rank-card rank-vip-plus">
+                    <div>
+                        <img class="rank-tag-img" src="vip+_tag.png" alt="VIP+ Tag">
+                        <h2 class="rank-name">VIP+</h2>
+                        <div class="rank-price">100.000đ <span>/ vĩnh viễn</span></div>
+                        <ul class="features-list">
+                            <li>Đầy đủ mọi đặc quyền của gói VIP</li>
+                            <li>Prefix [VIP+] tím hồng cá tính</li>
+                            <li>Mở rộng thêm 1 trang rương cá nhân</li>
+                            <li>Sở hữu bộ Kit VIP+ tuần cực xịn</li>
+                        </ul>
+                    </div>
+                    <a href="https://discord.gg/jhnJuCZWe" target="_blank" class="buy-now-btn">MUA QUA DISCORD</a>
+                </div>
+
+                <!-- Rank MVP -->
+                <div class="rank-card rank-mvp">
+                    <div>
+                        <img class="rank-tag-img" src="mvp_tag.png" alt="MVP Tag">
+                        <h2 class="rank-name">MVP</h2>
+                        <div class="rank-price">200.000đ <span>/ vĩnh viễn</span></div>
+                        <ul class="features-list">
+                            <li>Bao gồm tất cả đặc quyền VIP+</li>
+                            <li>Prefix [MVP] Cầu Vồng phát sáng</li>
+                            <li>Sử dụng lệnh /feed khi đói bụng</li>
+                            <li>Tăng tỷ lệ rớt đồ hiếm từ boss +5%</li>
+                        </ul>
+                    </div>
+                    <a href="https://discord.gg/jhnJuCZWe" target="_blank" class="buy-now-btn">MUA QUA DISCORD</a>
+                </div>
+
+                <!-- Rank MVP+ -->
+                <div class="rank-card rank-mvp-plus">
+                    <div>
+                        <img class="rank-tag-img" src="mvp+_tag.png" alt="MVP+ Tag">
+                        <h2 class="rank-name">MVP+</h2>
+                        <div class="rank-price">350.000đ <span>/ vĩnh viễn</span></div>
+                        <ul class="features-list">
+                            <li>Cấp bậc quyền lực cao nhất</li>
+                            <li>Prefix [MVP+] Tỏa sáng lấp lánh</li>
+                            <li>Sử dụng lệnh /heal khẩn cấp</li>
+                            <li>Sở hữu bộ Kit MVP+ (Mạnh nhất server)</li>
+                        </ul>
+                    </div>
+                    <a href="https://discord.gg/jhnJuCZWe" target="_blank" class="buy-now-btn">MUA QUA DISCORD</a>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- SECTION 2: DANH SÁCH STAFF & THÀNH VIÊN TAG -->
+        <section class="staff-section" id="staff-tags">
+            <div class="section-title">
+                <h2>HỆ THỐNG TAGS ĐẶC BIỆT</h2>
+                <p>Nhận diện chính xác các cấp bậc quản trị viên và thành viên đóng góp trong máy chủ</p>
+            </div>
+
+            <div class="staff-grid">
+                
+                <!-- ArcaneDungeon -->
+                <div class="staff-card">
+                    <img class="staff-tag-img" src="arcanedungeon_tag.png" alt="ArcaneDungeon Tag">
+                    <div class="staff-role-name">Arcane Dungeon</div>
+                    <div class="staff-desc">Danh hiệu hầm ngục cổ xưa</div>
+                </div>
+
+                <!-- Owner -->
+                <div class="staff-card">
+                    <img class="staff-tag-img" src="owner_tag.png" alt="Owner Tag">
+                    <div class="staff-role-name">Owner</div>
+                    <div class="staff-desc">Người sáng lập & Điều hành</div>
+                </div>
+
+                <!-- Admin -->
+                <div class="staff-card">
+                    <img class="staff-tag-img" src="admin_tag.png" alt="Admin Tag">
+                    <div class="staff-role-name">Admin</div>
+                    <div class="staff-desc">Quản trị viên cấp cao</div>
+                </div>
+
+                <!-- Mod -->
+                <div class="staff-card">
+                    <img class="staff-tag-img" src="mod_tag.png" alt="Mod Tag">
+                    <div class="staff-role-name">Moderator</div>
+                    <div class="staff-desc">Kiểm soát viên máy chủ</div>
+                </div>
+
+                <!-- Helper -->
+                <div class="staff-card">
+                    <img class="staff-tag-img" src="helper_tag.png" alt="Helper Tag">
+                    <div class="staff-role-name">Helper</div>
+                    <div class="staff-desc">Hỗ trợ viên giải đáp thắc mắc</div>
+                </div>
+
+                <!-- Builder -->
+                <div class="staff-card">
+                    <img class="staff-tag-img" src="builder_tag.png" alt="Builder Tag">
+                    <div class="staff-role-name">Builder</div>
+                    <div class="staff-desc">Đội ngũ xây dựng bản đồ</div>
+                </div>
+
+                <!-- Media -->
+                <div class="staff-card">
+                    <img class="staff-tag-img" src="media_tag.png" alt="Media Tag">
+                    <div class="staff-role-name">Media</div>
+                    <div class="staff-desc">Người sáng tạo nội dung</div>
+                </div>
+
+                <!-- Booster -->
+                <div class="staff-card">
+                    <img class="staff-tag-img" src="booster_tag.png" alt="Booster Tag">
+                    <div class="staff-role-name">Discord Booster</div>
+                    <div class="staff-desc">Thành viên boost server Discord</div>
+                </div>
+
+                <!-- Member -->
+                <div class="staff-card">
+                    <img class="staff-tag-img" src="member_tag.png" alt="Member Tag">
+                    <div class="staff-role-name">Member</div>
+                    <div class="staff-desc">Thành viên chính thức</div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 Frostbite Factions Server. Bản quyền hình ảnh thuộc về cộng đồng Minecraft.</p>
+        <p style="font-size: 0.8rem; opacity: 0.4;">We are not an official Minecraft product. We are not approved by or associated with Mojang or Microsoft.</p>
+    </footer>
+
+</body>
+</html>
+  
