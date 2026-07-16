@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Frostbite Factions - Minecraft Server</title>
-    <!-- Nhúng Font chữ từ Google Fonts -->
+    <title>Frostbite Factions - Trang Chủ Máy Chủ Minecraft</title>
+    <!-- Nhúng Font chữ từ Google Fonts giống trang Ranks -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <style>
-        /* Thiết lập biến màu sắc (Tông màu Frostbite - Băng giá) */
+        /* CSS Variables - Đồng bộ tông màu Frostbite Băng Giá */
         :root {
-            --primary: #38bdf8; /* Xanh băng sáng */
+            --primary: #38bdf8;
             --primary-glow: rgba(56, 189, 248, 0.4);
-            --secondary: #0ea5e9; /* Xanh dương đậm */
+            --secondary: #0ea5e9;
             --secondary-glow: rgba(14, 165, 233, 0.4);
-            --bg-dark: #030712; /* Đêm tối lạnh giá */
+            --bg-dark: #030712;
             --bg-glass: rgba(10, 17, 32, 0.7);
             --border-glass: rgba(255, 255, 255, 0.08);
             --text-main: #f3f4f6;
@@ -38,11 +38,12 @@
                 radial-gradient(at 100% 100%, rgba(14, 165, 233, 0.1) 0px, transparent 50%);
             color: var(--text-main);
             font-family: 'Outfit', sans-serif;
-            overflow-x: hidden;
-            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Thanh Điều Hướng Header */
+        /* Header Điều Hướng - Đồng bộ 100% với rank.html */
         header {
             display: flex;
             justify-content: space-between;
@@ -66,9 +67,9 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 0 20px var(--primary-glow);
+            text-decoration: none;
         }
 
-        /* Menu chính & Dropdown */
         nav {
             display: flex;
             gap: 2rem;
@@ -93,7 +94,6 @@
             color: var(--primary);
         }
 
-        /* Thết kế Menu Dropdown (Chọn Cụm / Rank / Tài Khoản) */
         .dropdown {
             position: relative;
             display: inline-block;
@@ -130,12 +130,11 @@
             color: var(--primary);
         }
 
-        /* Hiện dropdown khi di chuột qua */
         .dropdown:hover .dropdown-content {
             display: block;
         }
 
-        /* Nút Tài Khoản nổi bật */
+        /* Nút Tài khoản - Đồng bộ login/register thành dn/dk */
         .nav-acc {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: #030712 !important;
@@ -148,136 +147,100 @@
             color: #030712 !important;
         }
 
-        /* Banner Hero Section */
+        /* Hero Section - Banner chính hoành tráng */
         .hero {
-            position: relative;
-            min-height: 85vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            padding: 8rem 2rem 6rem;
             text-align: center;
-            padding: 0 1.5rem;
-            background: linear-gradient(rgba(3, 7, 18, 0.6), var(--bg-dark)), 
-                        url('https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=1920') no-repeat center center/cover;
+            position: relative;
+            overflow: hidden;
         }
 
         .hero::before {
             content: '';
             position: absolute;
-            inset: 0;
-            background: radial-gradient(circle, transparent 20%, var(--bg-dark) 80%);
-            pointer-events: none;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 10;
-            max-width: 800px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            background: var(--primary-glow);
+            filter: blur(120px);
+            z-index: -1;
+            border-radius: 50%;
         }
 
         .hero h1 {
             font-family: 'Cinzel', serif;
             font-size: 4rem;
             font-weight: 900;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            letter-spacing: 3px;
-            text-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
-        }
-
-        .hero h1 span {
-            background: linear-gradient(135deg, #e0f2fe, var(--primary));
+            letter-spacing: 4px;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff, var(--primary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 40px rgba(56, 189, 248, 0.2);
         }
 
         .hero p {
             font-size: 1.25rem;
             color: var(--text-muted);
-            margin-bottom: 2.5rem;
-            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.6;
         }
 
-        /* Hộp Copy IP */
-        .ip-box {
-            background: var(--bg-glass);
-            border: 1px solid var(--border-glass);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            padding: 0.5rem 0.5rem 0.5rem 1.5rem;
-            border-radius: 50px;
+        /* Khối hiển thị IP Máy Chủ */
+        .ip-container {
             display: inline-flex;
             align-items: center;
-            gap: 1.5rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 
-                        inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            background: rgba(10, 17, 32, 0.8);
+            border: 1px solid var(--border-glass);
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            gap: 1rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            margin-bottom: 3rem;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s;
         }
 
-        .ip-box:hover {
-            transform: translateY(-3px);
+        .ip-container:hover {
             border-color: var(--primary);
-            box-shadow: 0 15px 40px var(--primary-glow);
+            box-shadow: 0 0 20px var(--primary-glow);
+            transform: scale(1.02);
         }
 
         .ip-text {
             font-family: 'Outfit', sans-serif;
             font-weight: 800;
-            font-size: 1.15rem;
-            letter-spacing: 1.5px;
-            background: linear-gradient(135deg, #ffffff, #e0f2fe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+            color: var(--primary);
         }
 
-        .copy-btn {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        .ip-btn {
+            background: var(--primary);
             color: #030712;
             border: none;
-            padding: 0.8rem 1.8rem;
-            border-radius: 50px;
-            font-weight: 800;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.8rem;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px var(--primary-glow);
+            transition: 0.2s;
         }
 
-        /* Trạng Thái Server */
-        .server-status {
-            margin-top: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            font-weight: 500;
+        .ip-btn:hover {
+            filter: brightness(1.2);
         }
 
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: #ef4444;
-            box-shadow: 0 0 10px #ef4444;
-        }
-
-        .status-dot.online {
-            background-color: #10b981;
-            box-shadow: 0 0 12px #10b981;
-        }
-
-        /* Section Container - Cụm chơi chính */
+        /* Container Chính */
         .container {
-            max-width: 900px; /* Thu nhỏ chiều rộng để căn giữa 1 cụm duy nhất */
-            margin: 6rem auto;
-            padding: 0 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 6rem;
         }
 
+        /* Section Các Cụm Chơi (Factions) */
         .section-title {
             text-align: center;
             margin-bottom: 4rem;
@@ -288,93 +251,89 @@
             font-size: 2.5rem;
             font-weight: 900;
             letter-spacing: 2px;
+            background: linear-gradient(135deg, #ffffff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 0.5rem;
-        }
-
-        .section-title h2 span {
-            color: var(--primary);
-            text-shadow: 0 0 20px var(--primary-glow);
         }
 
         .section-title p {
             color: var(--text-muted);
-            font-size: 1.1rem;
-        }
-
-        /* Hiển thị 1 Cụm chơi duy nhất */
-        .single-cluster {
-            background: var(--bg-glass);
-            border: 1px solid var(--primary);
-            border-radius: 20px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            box-shadow: 0 15px 40px var(--primary-glow);
-            transition: transform 0.3s;
-        }
-
-        .single-cluster:hover {
-            transform: translateY(-5px);
-        }
-
-        .cluster-img-wrapper {
-            position: relative;
-            width: 100%;
-            height: 350px;
-            overflow: hidden;
-        }
-
-        .cluster-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .cluster-img-wrapper::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, var(--bg-dark), transparent);
-        }
-
-        .cluster-body {
-            padding: 3rem 2rem;
-            text-align: center;
-            max-width: 700px;
-        }
-
-        .cluster-body h3 {
-            font-family: 'Cinzel', serif;
-            font-size: 2rem;
-            color: #ffffff;
-            margin-bottom: 1rem;
-            letter-spacing: 2px;
-        }
-
-        .cluster-body p {
-            color: var(--text-muted);
-            font-size: 1.05rem;
-            margin-bottom: 2rem;
-        }
-
-        .play-now-btn {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: #030712;
-            text-decoration: none;
-            padding: 1rem 2.5rem;
-            border-radius: 30px;
-            font-weight: 800;
             font-size: 1rem;
-            letter-spacing: 1px;
-            display: inline-block;
-            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        /* Layout giới thiệu cụm */
+        .gamemode-card {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: 24px;
+            padding: 3rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             transition: all 0.3s;
         }
 
-        .play-now-btn:hover {
-            filter: brightness(1.2);
-            transform: scale(1.05);
+        .gamemode-card:hover {
+            border-color: rgba(56, 189, 248, 0.2);
+            box-shadow: 0 20px 50px rgba(56, 189, 248, 0.05);
+        }
+
+        .gamemode-info h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .gamemode-info p {
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .gamemode-features {
+            list-style: none;
+        }
+
+        .gamemode-features li {
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+        }
+
+        .gamemode-features li::before {
+            content: '❄';
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        /* Khung ảnh minh họa game chế độ giả lập 3D */
+        .gamemode-preview {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(14, 165, 233, 0.02));
+            border: 1px solid var(--border-glass);
+            height: 300px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gamemode-preview::after {
+            content: 'FROSTBITE FACTIONS';
+            font-family: 'Cinzel', serif;
+            font-weight: 900;
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            color: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 2rem;
         }
 
         /* Chân Trang */
@@ -385,14 +344,11 @@
             border-top: 1px solid var(--border-glass);
             font-size: 0.9rem;
             color: var(--text-muted);
+            margin-top: auto;
         }
 
-        footer p {
-            margin-bottom: 1rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
+        /* Responsive di động */
+        @media (max-width: 900px) {
             header {
                 flex-direction: column;
                 gap: 1.2rem;
@@ -404,28 +360,29 @@
                 gap: 1rem;
             }
             .hero h1 {
-                font-size: 2.5rem;
+                font-size: 2.8rem;
             }
-            .cluster-img-wrapper {
-                height: 220px;
+            .gamemode-card {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding: 2rem;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Header / Menu Điều Hướng -->
+    <!-- Header / Menu Điều Hướng (Đồng bộ 100% với rank.html) -->
     <header>
-        <div class="logo">Frostbite Factions</div>
+        <a href="index.html" class="logo">Frostbite Factions</a>
         <nav>
-            <a href="#home">Trang chủ</a>
+            <a href="index.html" style="color: var(--primary);">Trang chủ</a>
 
             <!-- Dropdown 1: Chọn Cụm -->
             <div class="dropdown">
                 <button class="dropdown-btn">Chọn Cụm ▼</button>
                 <div class="dropdown-content">
-                    <a href="#cum-chinh">Cụm Factions Băng Giá (Chính)</a>
-                    <!-- Bạn có thể dễ dàng thêm <a href="#">Cụm mới</a> tại đây sau này -->
+                    <a href="#cum-chinh">Cụm Factions Băng Giá</a>
                 </div>
             </div>
 
@@ -433,15 +390,14 @@
             <div class="dropdown">
                 <button class="dropdown-btn">Mua Rank ▼</button>
                 <div class="dropdown-content">
-                    <a href="#">Rank VIP</a>
-                    <a href="#">Rank LEGEND</a>
-                    <a href="#">Rank FROSTBITE</a>
+                    <a href="rank.html#ranks">Danh sách Rank</a>
+                    <a href="rank.html#staff-tags">Danh sách Staff Tag</a>
                 </div>
             </div>
 
             <a href="https://discord.gg/jhnJuCZWe" target="_blank">Discord</a>
 
-            <!-- Dropdown 3: Tài khoản (Nút nổi bật) -->
+            <!-- Dropdown 3: Tài khoản (Cập nhật login/register -> dn/dk) -->
             <div class="dropdown">
                 <button class="dropdown-btn nav-acc">Tài khoản ▼</button>
                 <div class="dropdown-content">
@@ -453,88 +409,69 @@
         </nav>
     </header>
 
-    <!-- Banner chính -->
-    <section class="hero" id="home">
-        <div class="hero-content">
-            <h1>Chinh Phục <span>Frostbite Factions</span></h1>
-            <p>Khám phá thế giới sinh tồn băng giá đầy khắc nghiệt cùng các chiến hữu.</p>
-            
-            <div class="ip-box" onclick="copyIP()">
-                <span class="ip-text">frostbitefactions714.mcsh.io</span>
-                <button class="copy-btn">SAO CHÉP IP</button>
-            </div>
-
-            <div class="server-status">
-                <span class="status-dot" id="statusDot"></span>
-                <span id="statusText">Đang kết nối tới máy chủ...</span>
-            </div>
+    <!-- Hero Section Banner -->
+    <section class="hero">
+        <h1>FROSTBITE FACTIONS</h1>
+        <p>Vương quốc băng giá khắc nghiệt. Hãy thành lập bang hội, chiếm đóng lãnh địa và thống trị vùng đất tuyết phủ lạnh giá nhất hành tinh Minecraft.</p>
+        
+        <!-- Nút Copy IP tiện lợi -->
+        <div class="ip-container" onclick="copyIP()">
+            <span id="ip-address" class="ip-text">play.frostbite.vn</span>
+            <button class="ip-btn" id="copy-btn">SAO CHÉP IP</button>
         </div>
     </section>
 
-    <!-- Khu vực hiển thị 1 Cụm duy nhất -->
+    <!-- Khối Container chính chứa các chế độ chơi -->
     <main class="container" id="cum-chinh">
-        <div class="section-title">
-            <h2>Cụm Chơi <span>Duy Nhất</span></h2>
-            <p>Trải nghiệm máy chủ sinh tồn thế hệ mới</p>
-        </div>
         
-        <div class="single-cluster">
-            <div class="cluster-img-wrapper">
-                <img class="cluster-img" src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=900" alt="Factions">
+        <div class="section-title">
+            <h2>CỤM CHƠI CHÍNH</h2>
+            <p>Trải nghiệm máy chủ Factions thế hệ mới đầy tính cạnh tranh và kịch tính</p>
+        </div>
+
+        <div class="gamemode-card">
+            <div class="gamemode-info">
+                <h3>Factions Băng Giá</h3>
+                <p>Một chế độ chơi Factions cổ điển kết hợp hoàn hảo cùng các tính năng hiện đại. Bạn sẽ phải đối mặt với cái lạnh khắc nghiệt, xây dựng thành lũy, chế tạo vũ khí tối tân thông qua các hệ thống custom và sẵn sàng chiến đấu trước các đợt tấn công từ đối thủ.</p>
+                <ul class="gamemode-features">
+                    <li>Hệ thống chiếm đóng vùng đất (Claim Land)</li>
+                    <li>Giải đấu thế lực Bang Hội tổ chức định kỳ</li>
+                    <li>Hầm ngục Boss (Arcane Dungeon) thử thách cực đại</li>
+                    <li>Hệ thống kinh tế cân bằng, nâng cấp trang bị chuyên sâu</li>
+                </ul>
             </div>
-            <div class="cluster-body">
-                <h3>❄️ Factions Băng Giá (Mùa 1)</h3>
-                <p>Nơi các bang hội tập hợp lực lượng, xây dựng pháo đài phòng thủ giữa mùa đông khắc nghiệt và đi đánh chiếm lãnh thổ của kẻ địch. Hệ thống kỹ năng phép thuật đa dạng, cơ chế bang hội chuyên nghiệp cùng chuỗi nhiệm vụ hấp dẫn đang chờ bạn khám phá!</p>
-                <a href="#" class="play-now-btn" onclick="copyIP(); return false;">VÀO CHƠI NGAY</a>
+            
+            <div class="gamemode-preview">
+                <!-- Chỗ trống này bạn có thể chèn ảnh chụp map server sau này -->
             </div>
         </div>
+
     </main>
 
     <!-- Footer -->
     <footer>
         <p>© 2026 Frostbite Factions Server. Bản quyền hình ảnh thuộc về cộng đồng Minecraft.</p>
-        <p style="font-size: 0.8rem; opacity: 0.4;">We are not an official Minecraft product. We are not approved by or associated with Mojang or Microsoft.</p>
+        <p style="font-size: 0.8rem; opacity: 0.4; margin-top: 0.5rem;">We are not an official Minecraft product. We are not approved by or associated with Mojang or Microsoft.</p>
     </footer>
 
+    <!-- Script copy IP nhanh chóng -->
     <script>
-        const SERVER_IP = "frostbitefactions714.mcsh.io"; 
-
         function copyIP() {
-            navigator.clipboard.writeText(SERVER_IP).then(() => {
-                const btn = document.querySelector('.copy-btn');
-                btn.innerText = "ĐÃ SAO CHÉP!";
-                btn.style.background = "linear-gradient(135deg, #10b981, #059669)";
+            const ipText = document.getElementById("ip-address").innerText;
+            navigator.clipboard.writeText(ipText).then(() => {
+                const copyBtn = document.getElementById("copy-btn");
+                copyBtn.innerText = "ĐÃ SAO CHÉP!";
+                copyBtn.style.background = "#22c55e"; // Đổi sang màu xanh lá
+                copyBtn.style.color = "#ffffff";
                 
                 setTimeout(() => {
-                    btn.innerText = "SAO CHÉP IP";
-                    btn.style.background = "linear-gradient(135deg, var(--primary), var(--secondary))";
+                    copyBtn.innerText = "SAO CHÉP IP";
+                    copyBtn.style.background = "var(--primary)";
+                    copyBtn.style.color = "#030712";
                 }, 2000);
-            }).catch(err => {
-                alert("Không thể tự động sao chép IP, vui lòng tự bôi đen để copy.");
             });
         }
-
-        async function fetchServerStatus() {
-            try {
-                const response = await fetch(`https://api.mcsrvstat.us/2/${SERVER_IP}`);
-                const data = await response.json();
-                
-                const dot = document.getElementById('statusDot');
-                const text = document.getElementById('statusText');
-
-                if (data.online) {
-                    dot.classList.add('online');
-                    text.innerText = `Server đang Online • ${data.players.online}/${data.players.max} người chơi`;
-                } else {
-                    dot.classList.remove('online');
-                    text.innerText = "Server hiện đang bảo trì hoặc chưa mở";
-                }
-            } catch (error) {
-                document.getElementById('statusText').innerText = "Không thể lấy thông tin Server";
-            }
-        }
-
-        fetchServerStatus();
     </script>
+
 </body>
 </html>
