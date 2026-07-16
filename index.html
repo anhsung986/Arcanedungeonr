@@ -3,298 +3,475 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arcane Dungeon - Minecraft Server</title>
+    <title>Frostbite Factions - Minecraft Server</title>
+    <!-- Nhúng Font chữ từ Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
     <style>
-        /* CSS Reset & Variable */
+        /* Thiết lập biến màu sắc cho toàn bộ trang (Tông màu Frostbite - Băng giá) */
         :root {
-            --primary-color: #ffaa00; /* Màu vàng cam đặc trưng MC */
-            --bg-dark: #121212;
-            --bg-card: #1e1e1e;
-            --text-light: #f5f5f5;
-            --text-muted: #aaaaaa;
+            --primary: #38bdf8; /* Xanh băng sáng */
+            --primary-glow: rgba(56, 189, 248, 0.4);
+            --secondary: #0ea5e9; /* Xanh dương đậm */
+            --secondary-glow: rgba(14, 165, 233, 0.4);
+            --bg-dark: #030712; /* Đêm tối lạnh giá */
+            --bg-glass: rgba(10, 17, 32, 0.7);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
         }
 
+        /* Reset & Base Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
         }
 
         body {
             background-color: var(--bg-dark);
-            color: var(--text-light);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(14, 165, 233, 0.1) 0px, transparent 50%);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
             line-height: 1.6;
         }
 
-        /* Header / Navigation */
+        /* Thanh Điều Hướng Header */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.5rem 5%;
-            background-color: rgba(18, 18, 18, 0.95);
+            padding: 1.25rem 8%;
+            background: rgba(3, 7, 18, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-glass);
             position: sticky;
             top: 0;
-            z-index: 100;
-            border-bottom: 2px solid #2d2d2d;
+            z-index: 1000;
         }
 
         .logo {
-            font-size: 1.6rem;
-            font-weight: bold;
-            color: var(--primary-color);
-            text-transform: uppercase;
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            font-weight: 900;
             letter-spacing: 2px;
+            background: linear-gradient(135deg, var(--primary), #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
         }
 
         nav a {
-            color: var(--text-light);
+            color: var(--text-main);
             text-decoration: none;
-            margin-left: 1.5rem;
             font-weight: 600;
-            transition: color 0.3s;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
         }
 
         nav a:hover {
-            color: var(--primary-color);
+            color: var(--primary);
         }
 
-        /* Hero Section */
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Banner Hero Section */
         .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(18, 18, 18, 1)), 
-                        url('https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=1920') no-repeat center center/cover;
-            height: 70vh;
+            position: relative;
+            min-height: 85vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 0 1rem;
+            padding: 0 1.5rem;
+            background: linear-gradient(rgba(3, 7, 18, 0.6), var(--bg-dark)), 
+                        url('https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=1920') no-repeat center center/cover;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, transparent 20%, var(--bg-dark) 80%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 800px;
         }
 
         .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+            font-family: 'Cinzel', serif;
+            font-size: 4rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: 3px;
+            text-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
         }
 
         .hero h1 span {
-            color: var(--primary-color);
+            background: linear-gradient(135deg, #e0f2fe, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        /* IP Copy Container */
-        .ip-container {
-            background-color: var(--bg-card);
-            border: 2px solid var(--primary-color);
-            border-radius: 8px;
-            padding: 0.8rem 1.5rem;
-            display: flex;
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+        }
+
+        /* Hộp Copy IP Hiện Đại */
+        .ip-box {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+            border-radius: 50px;
+            display: inline-flex;
             align-items: center;
-            gap: 15px;
-            margin-top: 1.5rem;
+            gap: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 
+                        inset 0 1px 1px rgba(255, 255, 255, 0.1);
             cursor: pointer;
-            transition: transform 0.2s, background-color 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .ip-container:hover {
-            transform: scale(1.03);
-            background-color: #252525;
+        .ip-box:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 40px var(--primary-glow);
         }
 
         .ip-text {
-            font-family: 'Courier New', Courier, monospace;
-            font-weight: bold;
-            font-size: 1.2rem;
-            letter-spacing: 1px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.15rem;
+            letter-spacing: 1.5px;
+            background: linear-gradient(135deg, #ffffff, #e0f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .copy-btn {
-            background: var(--primary-color);
-            color: black;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #030712;
             border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-weight: bold;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
             cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px var(--primary-glow);
         }
 
-        /* Server Status Box */
-        .status-box {
-            margin-top: 1rem;
-            font-size: 1rem;
+        .copy-btn:hover {
+            filter: brightness(1.2);
+        }
+
+        /* Trạng Thái Server */
+        .server-status {
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.95rem;
             color: var(--text-muted);
-        }
-        .status-dot {
-            height: 10px;
-            width: 10px;
-            background-color: #ff3333;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 5px;
-        }
-        .status-dot.online {
-            background-color: #2ecc71;
+            font-weight: 500;
         }
 
-        /* Main Content */
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #ef4444;
+            box-shadow: 0 0 10px #ef4444;
+        }
+
+        .status-dot.online {
+            background-color: #10b981;
+            box-shadow: 0 0 12px #10b981;
+        }
+
+        /* Section Container */
         .container {
             max-width: 1200px;
-            margin: 4rem auto;
-            padding: 0 1.5rem;
+            margin: 6rem auto;
+            padding: 0 2rem;
         }
 
         .section-title {
             text-align: center;
-            font-size: 2rem;
-            margin-bottom: 3rem;
-            text-transform: uppercase;
+            margin-bottom: 4rem;
         }
 
-        .section-title span {
-            color: var(--primary-color);
+        .section-title h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
         }
 
-        /* Modes Grid */
+        .section-title h2 span {
+            color: var(--primary);
+            text-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .section-title p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Thẻ Chế Độ Chơi (Cards Grid) */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
         }
 
         .card {
-            background-color: var(--bg-card);
-            border-radius: 8px;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
             overflow: hidden;
-            border: 1px solid #2d2d2d;
-            transition: transform 0.3s;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
 
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px var(--primary-glow);
+        }
+
+        .card-img-wrapper {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
         }
 
         .card-img {
-            height: 180px;
-            background-color: #333;
-            background-size: cover;
-            background-position: center;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .card:hover .card-img {
+            transform: scale(1.1);
+        }
+
+        .card-img-wrapper::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, var(--bg-dark), transparent);
         }
 
         .card-body {
-            padding: 1.5rem;
+            padding: 2rem;
         }
 
         .card-body h3 {
-            margin-bottom: 0.5rem;
-            color: var(--primary-color);
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            color: #ffffff;
+            margin-bottom: 0.8rem;
+            letter-spacing: 1px;
+            transition: color 0.3s;
         }
 
-        /* Footer */
-        footer {
-            background-color: #0c0c0c;
-            padding: 2rem;
-            text-align: center;
+        .card:hover .card-body h3 {
+            color: var(--primary);
+        }
+
+        .card-body p {
             color: var(--text-muted);
-            border-top: 2px solid #2d2d2d;
-            margin-top: 5rem;
+            font-size: 0.95rem;
+            font-weight: 300;
+        }
+
+        /* Chân Trang (Footer) */
+        footer {
+            background-color: #02040a;
+            padding: 3rem 1.5rem;
+            text-align: center;
+            border-top: 1px solid var(--border-glass);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        footer p {
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1.5rem;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .ip-box {
+                padding: 0.4rem 0.4rem 0.4rem 1rem;
+                gap: 0.8rem;
+                border-radius: 30px;
+            }
+            .ip-text {
+                font-size: 0.95rem;
+            }
+            .copy-btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Thanh Menu -->
+    <!-- Header / Menu -->
     <header>
-        <div class="logo">Arcane Dungeon</div>
+        <div class="logo">Frostbite Factions</div>
         <nav>
             <a href="#home">Trang chủ</a>
             <a href="#modes">Chế độ chơi</a>
             <a href="https://discord.gg/jhnJuCZWe" target="_blank">Discord</a>
-            <a href="#store" style="color: var(--primary-color);">Cửa Hàng</a>
         </nav>
     </header>
 
-    <!-- Khu vực Banner chính -->
+    <!-- Banner Hero chính -->
     <section class="hero" id="home">
-        <h1>Chào mừng tới <span>Arcane Dungeon</span></h1>
-        <p>Tham gia vào thế giới sinh tồn độc đáo, kết nối cộng đồng game thủ cực đông vui.</p>
-        
-        <!-- Hộp IP click để copy nhanh -->
-        <div class="ip-container" onclick="copyIP()">
-            <span class="ip-text" id="serverIP">frostbitefactions714.mcsh.io</span>
-            <button class="copy-btn">COPY</button>
-        </div>
+        <div class="hero-content">
+            <h1>Chinh Phục <span>Frostbite Factions</span></h1>
+            <p>Tham gia vào thế giới sinh tồn băng giá kịch tính, kết bang hội lập thế lực thống trị lãnh địa.</p>
+            
+            <!-- Hộp IP copy cực mượt -->
+            <div class="ip-box" onclick="copyIP()">
+                <span class="ip-text">frostbitefactions714.mcsh.io</span>
+                <button class="copy-btn">SAO CHÉP IP</button>
+            </div>
 
-        <!-- Trạng thái Server (Lấy tự động qua JS bên dưới) -->
-        <div class="status-box">
-            <span class="status-dot" id="statusDot"></span>
-            <span id="statusText">Đang tải trạng thái server...</span>
+            <!-- Trạng thái Server thực tế tự lấy qua API -->
+            <div class="server-status">
+                <span class="status-dot" id="statusDot"></span>
+                <span id="statusText">Đang kết nối tới máy chủ...</span>
+            </div>
         </div>
     </section>
 
-    <!-- Chế độ chơi -->
+    <!-- Các chế độ chơi -->
     <main class="container" id="modes">
-        <h2 class="section-title">Các <span>Chế độ chơi</span> chính</h2>
+        <div class="section-title">
+            <h2>Chế Độ <span>Trải Nghiệm</span></h2>
+            <p>Xây dựng đế chế của riêng bạn giữa mùa đông khắc nghiệt</p>
+        </div>
         
         <div class="grid">
-            <!-- Chế độ 1 -->
+            <!-- Thẻ Chế độ 1 -->
             <div class="card">
-                <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600');"></div>
+                <div class="card-img-wrapper">
+                    <img class="card-img" src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600" alt="Factions">
+                </div>
                 <div class="card-body">
-                    <h3>🌲 Sinh Tồn (Survival)</h3>
-                    <p>Khám phá thế giới rộng lớn, xây dựng vương quốc của riêng bạn, chống lại quái vật đêm và buôn bán cùng người chơi khác.</p>
+                    <h3>❄️ Bang Hội Tranh Hùng (Factions)</h3>
+                    <p>Cùng các đồng minh xây dựng bang hội, chiếm đóng lãnh thổ, thiết lập hệ thống phòng thủ pháo đài vững chắc và tuyên chiến đánh chiếm căn cứ kẻ thù.</p>
                 </div>
             </div>
 
-            <!-- Chế độ 2 -->
+            <!-- Thẻ Chế độ 2 -->
             <div class="card">
-                <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=600');"></div>
+                <div class="card-img-wrapper">
+                    <img class="card-img" src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=600" alt="Survival">
+                </div>
                 <div class="card-body">
-                    <h3>☁️ Skyblock</h3>
-                    <p>Bắt đầu từ một hòn đảo lơ lửng nhỏ bé với nguồn tài nguyên hạn chế. Bạn có đủ thông minh để biến nó thành một đế chế?</p>
+                    <h3>🌲 Sinh Tồn Băng Giá</h3>
+                    <p>Sinh tồn hoang dã đầy thử thách. Khai thác tài nguyên, chế tạo trang bị huyền thoại và đương đầu với những hiểm họa tiềm tàng từ thiên nhiên hung dữ.</p>
                 </div>
             </div>
 
-            <!-- Chế độ 3 -->
+            <!-- Thẻ Chế độ 3 -->
             <div class="card">
-                <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600');"></div>
+                <div class="card-img-wrapper">
+                    <img class="card-img" src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600" alt="PvP Arena">
+                </div>
                 <div class="card-body">
-                    <h3>⚔️ Đấu Trường (PvP)</h3>
-                    <p>Nơi khẳng định kỹ năng cá nhân qua các trận đấu kịch tính với phần thưởng cực kỳ hấp dẫn hàng tuần.</p>
+                    <h3>⚔️ Đấu Trường Khốc Liệt</h3>
+                    <p>Khẳng định sức mạnh cá nhân tại đấu trường PvP. Thử thách kỹ năng đấu tay đôi để nhận lấy những danh hiệu cao quý nhất máy chủ.</p>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Chân trang -->
+    <!-- Footer -->
     <footer>
-        <p>© 2026 Arcane Dungeon. We are not affiliated with Mojang Studios.</p>
+        <p>© 2026 Frostbite Factions Server. Bản quyền hình ảnh thuộc về cộng đồng Minecraft.</p>
+        <p style="font-size: 0.8rem; opacity: 0.4;">We are not an official Minecraft product. We are not approved by or associated with Mojang or Microsoft.</p>
     </footer>
 
-    <!-- Xử lý Javascript -->
+    <!-- Logic JavaScript -->
     <script>
-        // Địa chỉ IP Server của bạn (Thay đổi ở đây nếu cần)
         const SERVER_IP = "frostbitefactions714.mcsh.io"; 
 
-        // 1. Hàm Copy IP nhanh
+        // Hàm copy IP mượt mà có đổi trạng thái nút
         function copyIP() {
             navigator.clipboard.writeText(SERVER_IP).then(() => {
                 const btn = document.querySelector('.copy-btn');
-                btn.innerText = "ĐÃ COPY!";
-                btn.style.backgroundColor = "#2ecc71";
+                btn.innerText = "ĐÃ SAO CHÉP!";
+                btn.style.background = "linear-gradient(135deg, #10b981, #059669)"; // Đổi sang màu xanh lá khi thành công
+                
                 setTimeout(() => {
-                    btn.innerText = "COPY";
-                    btn.style.backgroundColor = "var(--primary-color)";
+                    btn.innerText = "SAO CHÉP IP";
+                    btn.style.background = "linear-gradient(135deg, var(--primary), var(--secondary))";
                 }, 2000);
             }).catch(err => {
-                alert("Không thể copy tự động, vui lòng tự bôi đen IP.");
+                alert("Không thể tự động sao chép IP, vui lòng tự bôi đen để copy.");
             });
         }
 
-        // 2. Tự động lấy số lượng người chơi online thực tế từ API mcsrvstat
+        // Tự động kiểm tra trạng thái thực tế của Server qua API mcsrvstat
         async function fetchServerStatus() {
             try {
-                // Sử dụng API miễn phí mcsrvstat để check trạng thái
                 const response = await fetch(`https://api.mcsrvstat.us/2/${SERVER_IP}`);
                 const data = await response.json();
                 
@@ -303,17 +480,17 @@
 
                 if (data.online) {
                     dot.classList.add('online');
-                    text.innerText = `Server Online: ${data.players.online}/${data.players.max} người chơi`;
+                    text.innerText = `Server đang Online • ${data.players.online}/${data.players.max} người chơi`;
                 } else {
                     dot.classList.remove('online');
-                    text.innerText = "Server hiện đang Bảo Trì / Offline";
+                    text.innerText = "Server hiện đang bảo trì hoặc chưa mở";
                 }
             } catch (error) {
-                document.getElementById('statusText').innerText = "Không thể kết nối tới dữ liệu Server";
+                document.getElementById('statusText').innerText = "Không thể lấy thông tin Server";
             }
         }
 
-        // Gọi hàm kiểm tra trạng thái ngay khi load trang
+        // Chạy kiểm tra ngay khi load xong trang
         fetchServerStatus();
     </script>
 </body>
