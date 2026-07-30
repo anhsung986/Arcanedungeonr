@@ -154,31 +154,23 @@
             return;
         }
 
-        // Đóng gói dữ liệu dạng FormData để gửi sang PHP
-        let formData = new FormData();
-        formData.append('username', username);
-        formData.append('password', password);
-
         try {
-let response = await fetch('https://arcanedungeon.gt.tc/register-api.php', {
-    method: 'POST',
-    body: formData
-});
+            // Tạo tài khoản và lưu thẳng vào Firebase Database dùng chung
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
 
+            await setDoc(doc(db, "players", user.uid), {
+                minecraftUsername: username,
+                email: email,
+                createdAt: new Date().toISOString()
+            });
 
-            let result = await response.json();
-
-            if (result.status === "success") {
-                showToast("✨ " + result.message);
-                setTimeout(() => { window.location.href = "login.html"; }, 1500);
-            } else {
-                showToast("Lỗi: " + result.message, true);
-            }
+            showToast("✨ Đăng ký tài khoản thành công!");
+            setTimeout(() => { window.location.href = "login.html"; }, 1500);
         } catch (error) {
-            showToast("Lỗi kết nối đến máy chủ!", true);
+            showToast("Lỗi: " + error.message, true);
         }
     }
-
 </script>
 
 <script>
@@ -194,4 +186,3 @@ let response = await fetch('https://arcanedungeon.gt.tc/register-api.php', {
 
 </body>
 </html>
-
