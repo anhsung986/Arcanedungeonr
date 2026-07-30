@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FrostbiteFactions - Đăng Ký</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #06060a;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(0, 242, 254, 0.15) 0px, transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(118, 75, 162, 0.15) 0px, transparent 45%);
+            color: #f3f4f6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(13, 13, 22, 0.75);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            width: 100%;
+            max-width: 420px;
+            padding: 35px;
+            border-radius: 28px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, #00f2fe, #764ba2, transparent);
+        }
+        .home-btn {
+            position: fixed; top: 20px; left: 20px; z-index: 9999;
+            display: flex; align-items: center; gap: 8px;
+            padding: 12px 18px; border-radius: 14px;
+            background: rgba(13, 13, 22, .85); backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, .1);
+            color: #fff; text-decoration: none; font-weight: 700; transition: .25s;
+        }
+        .home-btn:hover { background: rgba(0, 242, 254, .15); border-color: #00f2fe; }
+        h2 {
+            font-size: 26px; font-weight: 800; letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #b19fff 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+        }
+        .subtitle {
+            font-size: 11px; color: #8f8fae; text-transform: uppercase;
+            letter-spacing: 2px; font-weight: 700; margin-bottom: 24px;
+        }
+        .form-box { display: flex; text-align: left; flex-direction: column; gap: 14px; }
+        .input-group { display: flex; flex-direction: column; gap: 6px; }
+        .input-group label { font-size: 12px; color: #8f8fae; font-weight: 600; }
+        .input-group input {
+            width: 100%; background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1); padding: 12px 16px;
+            border-radius: 12px; color: #fff; font-family: 'Outfit', sans-serif;
+            font-size: 14px; outline: none; transition: all 0.2s ease;
+        }
+        .input-group input:focus { border-color: #00f2fe; box-shadow: 0 0 10px rgba(0, 242, 254, 0.2); }
+        .submit-btn {
+            width: 100%; background: linear-gradient(135deg, #00f2fe, #4facfe);
+            border: none; color: #06060a; padding: 13px; border-radius: 12px;
+            font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 700;
+            cursor: pointer; transition: all 0.25s ease; margin-top: 6px;
+        }
+        .submit-btn:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 242, 254, 0.3); }
+        .switch-link {
+            margin-top: 16px; font-size: 13px; color: #8f8fae; text-align: center;
+        }
+        .switch-link a { color: #00f2fe; text-decoration: none; font-weight: 600; }
+        .switch-link a:hover { text-decoration: underline; }
+        .toast {
+            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%) translateY(20px);
+            background: #10b981; color: #fff; padding: 12px 24px; border-radius: 12px;
+            font-size: 13px; font-weight: 600; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none; z-index: 1000;
+        }
+        .toast.error { background: #ef4444; }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+
+<a href="index.html" class="home-btn">🏠 Home</a>
+
+<div class="container">
+    <div class="server-header">
+        <h2>FrostbiteFactions</h2>
+        <div class="subtitle">Đăng ký tài khoản</div>
+    </div>
+
+    <div class="form-box">
+        <div class="input-group">
+            <label>Tên nhân vật trong game (MC Username)</label>
+            <input type="text" id="reg-username" placeholder="Ví dụ: Steve">
+        </div>
+        <div class="input-group">
+            <label>Email</label>
+            <input type="email" id="reg-email" placeholder="Nhập email của bạn...">
+        </div>
+        <div class="input-group">
+            <label>Mật khẩu</label>
+            <input type="password" id="reg-password" placeholder="••••••••">
+        </div>
+        <button class="submit-btn" onclick="handleRegister()">Tạo tài khoản</button>
+    </div>
+
+    <div class="switch-link">
+        Đã có tài khoản? <a href="login.html">Đăng nhập ngay</a>
+    </div>
+</div>
+
+<div id="toast" class="toast">Thông báo hệ thống</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAPrmtCN4b5tECNMbDl-qcEm-ObM1Z7P24",
+      authDomain: "register-sv-mc.firebaseapp.com",
+      projectId: "register-sv-mc",
+      storageBucket: "register-sv-mc.firebasestorage.app",
+      messagingSenderId: "204086852584",
+      appId: "1:204086852584:web:ce5ac22100e53450c0025d",
+      measurementId: "G-S0EXP2W3BY"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    window.handleRegister = async function() {
+        const username = document.getElementById('reg-username').value.trim();
+        const email = document.getElementById('reg-email').value.trim();
+        const password = document.getElementById('reg-password').value.trim();
+
+        if(!username || !email || !password) {
+            showToast("Vui lòng điền đầy đủ thông tin!", true);
+            return;
+        }
+
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            await setDoc(doc(db, "players", user.uid), {
+                minecraftUsername: username,
+                email: email,
+                createdAt: new Date().toISOString()
+            });
+
+            showToast("✨ Đăng ký tài khoản thành công!");
+            setTimeout(() => { window.location.href = "login.html"; }, 1500);
+        } catch (error) {
+            showToast("Lỗi: " + error.message, true);
+        }
+    }
+</script>
+
+<script>
+    function showToast(message, isError = false) {
+        const toast = document.getElementById('toast');
+        toast.innerText = message;
+        if(isError) toast.classList.add('error');
+        else toast.classList.remove('error');
+        toast.classList.add('show');
+        setTimeout(() => { toast.classList.remove('show'); }, 3000);
+    }
+</script>
+
+</body>
+</html>
+
