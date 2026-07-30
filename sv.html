@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FrostbiteFactions - Trạng thái Server</title>
+    <!-- Import font chữ hiện đại từ Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #06060a;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(0, 242, 254, 0.15) 0px, transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(118, 75, 162, 0.15) 0px, transparent 45%);
+            color: #f3f4f6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(13, 13, 22, 0.75);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            width: 100%;
+            max-width: 460px;
+            padding: 35px;
+            border-radius: 28px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00f2fe, #764ba2, transparent);
+        }
+        .server-header {
+            margin-bottom: 22px;
+        }
+        h2 {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #b19fff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 4px;
+        }
+        .subtitle {
+            font-size: 11px;
+            color: #8f8fae;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 700;
+        }
+
+.home-btn{
+    position:absolute;
+    top:18px;
+    left:18px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 15px;
+    border-radius:12px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.1);
+    color:#fff;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:700;
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    transition:.25s;
+    z-index:100;
+}
+
+.home-btn{
+    position:fixed;
+    top:20px;
+    left:20px;
+    z-index:9999;
+
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    padding:12px 18px;
+    border-radius:14px;
+
+    background:rgba(13,13,22,.85);
+    backdrop-filter:blur(15px);
+
+    border:1px solid rgba(255,255,255,.1);
+
+    color:#fff;
+    text-decoration:none;
+    font-weight:700;
+    transition:.25s;
+}
+
+.home-btn:hover{
+    background:rgba(0,242,254,.15);
+    border-color:#00f2fe;
+}
+}
+        /* Khung hiển thị IP & Nút Copy thiết kế mới nổi bật */
+        .ip-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .ip-box {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            color: #ffd700;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-copy-full {
+            width: 100%;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 165, 0, 0.15));
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            color: #ffd700;
+            padding: 12px;
+            border-radius: 12px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.25s ease;
+        }
+        .btn-copy-full:hover {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.25), rgba(255, 165, 0, 0.25));
+            border-color: #ffd700;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
+        }
+
+        /* Nhóm các nút chức năng còn lại (Discord, Làm mới) */
+        .btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+        .btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 12px;
+            border-radius: 12px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.25s ease;
+            text-decoration: none;
+        }
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(0, 242, 254, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 242, 254, 0.15);
+        }
+        .btn-discord {
+            background: linear-gradient(135deg, #5865F2, #7289DA);
+            color: #fff;
+            border: none;
+            font-weight: 700;
+        }
+        .btn-discord:hover {
+            box-shadow: 0 5px 20px rgba(88, 101, 242, 0.4);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+        .info-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.025);
+            padding: 13px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 14px;
+        }
+        .label {
+            color: #8f8fae;
+            font-weight: 500;
+        }
+        .value {
+            font-weight: 600;
+        }
+        .online { 
+            color: #10b981; 
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+        }
+        .online::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #10b981;
+        }
+        .offline { 
+            color: #ef4444; 
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .offline::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #ef4444;
+            border-radius: 50%;
+        }
+        
+        .player-section {
+            text-align: left;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 16px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .player-section h3 {
+            font-size: 11px;
+            margin-bottom: 12px;
+            color: #8f8fae;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+        .player-list {
+            max-height: 170px;
+            overflow-y: auto;
+            list-style: none;
+            padding-right: 4px;
+        }
+        .player-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .player-list::-webkit-scrollbar-thumb {
+            background: rgba(0, 242, 254, 0.3);
+            border-radius: 10px;
+        }
+        .player-item {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 9px 12px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: all 0.2s ease;
+        }
+        .player-item:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(0, 242, 254, 0.2);
+        }
+        .player-item img {
+            width: 26px;
+            height: 26px;
+            border-radius: 7px;
+            margin-right: 12px;
+            image-rendering: pixelated;
+            background: #000;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .no-players {
+            color: #6b6b8d;
+            font-style: italic;
+            font-size: 13px;
+            text-align: center;
+            padding: 12px 0;
+        }
+
+        /* Hộp thông báo popup góc màn hình */
+        .toast {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: #10b981;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+            z-index: 1000;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+<body>
+
+<a href="index.html" class="home-btn">
+    🏠 Home
+</a>
+
+<div class="container">
+        <div class="server-header">
+            <h2>FrostbiteFactions</h2>
+            <div class="subtitle">Java Edition Server</div>
+        </div>
+        
+        <!-- Khối IP và Nút Copy riêng biệt, hiển thị IP chữ -->
+        <div class="ip-container">
+            <div class="ip-box">
+                <span>🌐</span>
+                <span id="ip-string">frostbitefactions714.mcsh.io</span>
+            </div>
+            <button class="btn-copy-full" onclick="copyIP()">
+                📋 <span>Sao chép địa chỉ IP</span>
+            </button>
+        </div>
+
+        <!-- Các nút hành động phụ -->
+        <div class="btn-group">
+            <a href="https://discord.gg/link-discord-cua-ban" target="_blank" class="btn btn-discord">
+                💬 Discord
+            </a>
+            <button class="btn" onclick="checkServer()">
+                🔄 Làm mới
+            </button>
+        </div>
+        
+        <div class="info-grid">
+            <div class="info-group">
+                <span class="label">Trạng thái</span>
+                <span class="value" id="status">Đang kết nối...</span>
+            </div>
+            <div class="info-group">
+                <span class="label">Người chơi</span>
+                <span class="value" id="players">-- / --</span>
+            </div>
+            <div class="info-group">
+                <span class="label">Phiên bản</span>
+                <span class="value" id="version">--</span>
+            </div>
+        </div>
+
+        <div class="player-section">
+            <h3>Đang trực tuyến</h3>
+            <ul class="player-list" id="player-list">
+                <li class="no-players">Đang tải danh sách...</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Thông báo popup khi sao chép -->
+    <div id="toast" class="toast">✨ Đã sao chép IP vào bộ nhớ tạm!</div>
+
+    <script>
+        // IP số để web gọi API check trạng thái
+        const ip = "167.235.180.220";
+        const port = "14641";
+        const fullIP = `${ip}:${port}`;
+
+        // Địa chỉ chữ để hiển thị và copy
+        const copyDomain = "frostbitefactions714.mcsh.io";
+
+        function copyIP() {
+            navigator.clipboard.writeText(copyDomain).then(() => {
+                const toast = document.getElementById('toast');
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2000);
+            });
+        }
+
+        async function checkServer() {
+            const statusEl = document.getElementById('status');
+            const playersEl = document.getElementById('players');
+            const versionEl = document.getElementById('version');
+            const playerListEl = document.getElementById('player-list');
+
+            statusEl.innerText = 'Đang tải...';
+
+            try {
+                let response = await fetch(`https://api.mcsrvstat.us/3/${ip}:${port}`);
+                let data = await response.json();
+
+                if (data.online) {
+                    statusEl.innerText = 'ONLINE';
+                    statusEl.className = 'value online';
+                    playersEl.innerText = `${data.players.online} / ${data.players.max}`;
+                    versionEl.innerText = data.version || 'Java Edition';
+
+                    playerListEl.innerHTML = '';
+                    if (data.players.list && data.players.list.length > 0) {
+                        data.players.list.forEach(player => {
+                            let playerName = typeof player === 'object' ? (player.name || player.username || JSON.stringify(player)) : player;
+
+                            let li = document.createElement('li');
+                            li.className = 'player-item';
+                            li.innerHTML = `
+                                <img src="https://minotar.net/avatar/${playerName}/26.png" alt="${playerName}">
+                                <span style="font-weight: 500; color: #e2e8f0;">${playerName}</span>
+                            `;
+                            playerListEl.appendChild(li);
+                        });
+                    } else {
+                        if (data.players.online > 0) {
+                            playerListEl.innerHTML = `<li class="no-players">Có ${data.players.online} người chơi (Ẩn danh sách)</li>`;
+                        } else {
+                            playerListEl.innerHTML = `<li class="no-players">Không có ai trong server</li>`;
+                        }
+                    }
+
+                } else {
+                    statusEl.innerText = 'OFFLINE';
+                    statusEl.className = 'value offline';
+                    playersEl.innerText = '0 / 0';
+                    versionEl.innerText = 'Không xác định';
+                    playerListEl.innerHTML = `<li class="no-players">Server đang tắt</li>`;
+                }
+            } catch (error) {
+                console.error('Lỗi lấy dữ liệu:', error);
+                statusEl.innerText = 'Lỗi kết nối';
+                statusEl.className = 'value offline';
+            }
+        }
+
+        checkServer();
+        setInterval(checkServer, 30000);
+    </script>
+
+</body>
+</html>
