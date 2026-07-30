@@ -160,10 +160,10 @@
         formData.append('password', password);
 
         try {
-            let response = await fetch('https://server.arcanedungeon.gt.tc/register-api.php', {
-                method: 'POST',
-                body: formData
-            });
+let response = await fetch('https://arcanedungeon.gt.tc/register-api.php', {
+    method: 'POST',
+    body: formData
+});
 
 
             let result = await response.json();
