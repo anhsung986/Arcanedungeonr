@@ -148,6 +148,7 @@
         }
 
         try {
+            // Xác thực tài khoản với Firebase Database chung[span_1](start_span)[span_1](end_span)
             await signInWithEmailAndPassword(auth, email, password);
             showToast("✨ Đăng nhập thành công!");
             setTimeout(() => { window.location.href = "index.html"; }, 1500);
@@ -169,5 +170,4 @@
 </script>
 
 </body>
-          </html>
-
+</html>
